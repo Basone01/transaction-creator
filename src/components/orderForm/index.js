@@ -92,12 +92,12 @@ class OrderForm extends Component {
 	}
 
 	async submitOrder() {
-		this.setState({ isLoading: true });
 		const { brandSocialAccountInput } = this.state;
 		const err = this.validateData();
 		if (err) {
 			return alert(err);
 		}
+		this.setState({ isLoading: true });
 		const brandUsername = brandSocialAccountInput.toLowerCase();
 		const BrandQuery = new Parse.Query(BrandSocialAccount);
 		BrandQuery.equalTo('username', brandUsername);
@@ -144,6 +144,7 @@ class OrderForm extends Component {
 			);
 		} catch (error) {
 			console.log(error);
+			this.setState({ isLoading: false });
 		}
 	}
 
@@ -223,13 +224,13 @@ class OrderForm extends Component {
 					onChange={this.onInputChange}
 				/>
 
+				<OrderTypeSelect name="orderType" label="OrderType :" onChange={this.onInputChange} />
 				<ImageUploader
 					name="slipFile"
 					onImageChange={(file) => this.onImageChange(file)}
 					onImageClick={() => this.onImageClick()}
 				/>
 
-				<OrderTypeSelect name="orderType" label="OrderType :" onChange={this.onInputChange} />
 				<Button onClick={this.submitOrder} style={{ margin: '0 24px' }}>
 					Submit
 				</Button>

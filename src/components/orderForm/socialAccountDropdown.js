@@ -54,16 +54,28 @@ export default class SocialAccountDropdown extends Component {
 			return <SocialSelectItem key={i} account={account} onClick={() => this.onItemClick(i)} />;
 		});
 		return (
-			<SocialSelectBox onClick={this.open}>
-				<SocialSelectItem account={pureSocialData[selected]} />
-				{isOpen && <DropdownBox>{dropdownItem}</DropdownBox>}
-			</SocialSelectBox>
+			<InputBox>
+				<SocialSelectBox onClick={this.open}>
+				<InputLabel>Social Account :</InputLabel>
+					<SocialSelectItem account={pureSocialData[selected]} />
+					{isOpen && <DropdownBox>{dropdownItem}</DropdownBox>}
+				</SocialSelectBox>
+			</InputBox>
 		);
 	}
 }
 
 //style
-
+const InputBox = styled.label`
+	display: flex;
+	flex-direction: column;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+`;
+const InputLabel = styled.span`
+	line-height: 24px;
+	font-size: 14px;
+	padding:6px 24px;
+`;
 export const SocialSelectBox = styled.div`
 	position: relative;
 	min-height: 64px;
