@@ -1,14 +1,16 @@
 import Parse from 'parse';
 import React, { Component } from 'react';
 import { findInstagram } from '../../api';
-import { Flex, Button } from './styled';
+import { FormContainer, Button } from './styled';
 import ImageUploader from './imageUploader';
 import InputText from './inputText';
 import Order from '../../parse/Order';
 import SocialAccountDropdown from './socialAccountDropdown';
 import SocialAccount from '../../parse/SocialAccount';
 import BrandSocialAccount from '../../parse/BrandSocialAccount';
-import Select from './select';
+import OrderTypeSelect from './orderTypeSelect';
+import LoadingSpinner from './spinner';
+import swal from 'sweetalert';
 class OrderForm extends Component {
 	state = {
 		socialAccounts: [],
@@ -16,11 +18,11 @@ class OrderForm extends Component {
 		value: 0,
 		date: new Date(Date.now() + 1000 * 60 * 60 * 7).toISOString().substring(0, 16),
 		recipient: '',
-		brandSocialAccount: null,
 		brandSocialAccountInput: '',
 		slipFile: '',
 		orderType: 1,
-		error: ''
+		error: '',
+		isLoading: false
 	};
 
 	constructor(props) {
@@ -57,15 +59,8 @@ class OrderForm extends Component {
 			});
 			return errorMessage;
 		}
-		if (new Date(date) - new Date(Date.now()) < 0) {
+		if (new Date(date) - new Date() < 0) {
 			const errorMessage = 'Date must be in future';
-			this.setState({
-				error: errorMessage
-			});
-			return errorMessage;
-		}
-		if (!slipFile) {
-			const errorMessage = 'No slip uploaded';
 			this.setState({
 				error: errorMessage
 			});
@@ -85,10 +80,19 @@ class OrderForm extends Component {
 			});
 			return errorMessage;
 		}
+		if (!slipFile) {
+			const errorMessage = 'No slip uploaded';
+			this.setState({
+				error: errorMessage
+			});
+			return errorMessage;
+		}
+
 		return false;
 	}
 
 	async submitOrder() {
+		this.setState({ isLoading: true });
 		const { brandSocialAccountInput } = this.state;
 		const err = this.validateData();
 		if (err) {
@@ -105,13 +109,13 @@ class OrderForm extends Component {
 					const { followed_by, instagramId } = brandIG;
 					const creatingBrandData = new BrandSocialAccount();
 					creatingBrandData.set('username', brandUsername);
-					creatingBrandData.set('follwers', followed_by);
+					creatingBrandData.set('followers', followed_by);
 					creatingBrandData.set('socialAccountId', instagramId);
 					const createdBrandData = await creatingBrandData.save();
 					brand = createdBrandData;
 				}
 			}
-
+			const selfRef = this;
 			this.setState(
 				(state) => ({
 					brandSocialAccount: brand
@@ -121,10 +125,17 @@ class OrderForm extends Component {
 					order.selectAndSetValueFromState(this.state);
 					order.save(null, {
 						success: function(order) {
-							alert('Order created with objectId: ' + order.id);
+							selfRef.setState({ isLoading: false });
+							swal({
+								title: 'OK!',
+								text: 'Order Created',
+								icon: 'success',
+								button: 'OK'
+							});
 							console.log(order);
 						},
 						error: function(order, error) {
+							selfRef.setState({ isLoading: false });
 							alert('Failed to create new object, with error code: ' + error.message);
 							console.log(order, error);
 						}
@@ -168,11 +179,12 @@ class OrderForm extends Component {
 	}
 
 	render() {
-		const { socialAccounts, value, date, recipient, brandSocialAccountInput } = this.state;
+		const { socialAccounts, value, date, recipient, brandSocialAccountInput, isLoading } = this.state;
 
 		return (
-			<Flex style={{ padding: '0 12px' }}>
-				<h3 style={{ textAlign: 'center' }}>Create Order</h3>
+			<FormContainer>
+				<LoadingSpinner isDisplay={isLoading} />
+				<h3 style={{ textAlign: 'center', marginBottom: 24 }}>Create Order</h3>
 				<SocialAccountDropdown
 					socialAccounts={socialAccounts}
 					onSelect={(data) => this.onSelectAccount(data)}
@@ -217,9 +229,11 @@ class OrderForm extends Component {
 					onImageClick={() => this.onImageClick()}
 				/>
 
-				<Select name="orderType" label="OrderType :" onChange={this.onInputChange} />
-				<Button onClick={this.submitOrder}>Submit</Button>
-			</Flex>
+				<OrderTypeSelect name="orderType" label="OrderType :" onChange={this.onInputChange} />
+				<Button onClick={this.submitOrder} style={{ margin: '0 24px' }}>
+					Submit
+				</Button>
+			</FormContainer>
 		);
 	}
 }
