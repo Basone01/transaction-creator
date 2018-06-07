@@ -90,16 +90,15 @@ class OrderForm extends Component {
 
 	async submitOrder() {
 		const { brandSocialAccountInput } = this.state;
-		// const err = this.validateData();
-		// if (err) {
-		// 	return alert(err);
-		// }
-		const brandUsername = brandSocialAccountInput.toLowerCase()
+		const err = this.validateData();
+		if (err) {
+			return alert(err);
+		}
+		const brandUsername = brandSocialAccountInput.toLowerCase();
 		const BrandQuery = new Parse.Query(BrandSocialAccount);
 		BrandQuery.equalTo('username', brandUsername);
 		try {
 			let brand = await BrandQuery.first();
-			console.log('BRAND', brand);
 			if (!brand) {
 				const brandIG = await findInstagram(brandUsername);
 				if (brandIG.found) {
@@ -118,10 +117,8 @@ class OrderForm extends Component {
 					brandSocialAccount: brand
 				}),
 				() => {
-					console.log(this.state.brandSocialAccount);
 					const order = new Order();
 					order.selectAndSetValueFromState(this.state);
-					console.log(order);
 					order.save(null, {
 						success: function(order) {
 							alert('Order created with objectId: ' + order.id);
@@ -140,7 +137,6 @@ class OrderForm extends Component {
 	}
 
 	onInputChange(e) {
-		console.log(e.target.name, e.target.value);
 		let value =
 			e.target.type === 'number' || e.target.name === 'orderType' ? Number(e.target.value) : e.target.value;
 
