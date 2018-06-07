@@ -114,6 +114,12 @@ class OrderForm extends Component {
 					const createdBrandData = await creatingBrandData.save();
 					brand = createdBrandData;
 				}
+				else {
+					this.setState((state, props) => {
+						return { isLoading: false };
+					});
+					return alert(`Instagram Account Doesn't Exist!`);
+				}
 			}
 			const selfRef = this;
 			this.setState(

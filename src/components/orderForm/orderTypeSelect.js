@@ -5,9 +5,10 @@ const InputText = ({ label, onChange, suffix, type = 'text', ...props }) => {
 	return (
 		<InputBox>
 			<InputLabel>{label}</InputLabel>
-			<select {...props} onChange={onChange} style={{ padding: '6px 24px' ,margin:"16px 0"}}>
+			<select {...props} onChange={onChange} style={{ padding: '6px 24px', margin: '16px 0' }}>
 				<option value="1">Event Order</option>
 				<option value="2">Direct Order</option>
+				<option value="3">Story Order</option>
 			</select>
 		</InputBox>
 	);
@@ -28,4 +29,3 @@ const InputLabel = styled.span`
 	line-height: 24px;
 	font-size: 14px;
 `;
-
