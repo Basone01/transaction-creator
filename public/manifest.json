@@ -1,6 +1,6 @@
 {
-  "short_name": "Order Creator",
-  "name": "Order Creator",
+  "short_name": "Transaction Creator",
+  "name": "Transaction Creator",
   "icons": [
     {
       "src": "favicon.ico",

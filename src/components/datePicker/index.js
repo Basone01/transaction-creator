@@ -10,25 +10,29 @@ const enhance = compose(
 	withHandlers({
 		handleChange: (props) => (newDate) => {
 			props.setDate(newDate);
+			console.log(newDate)
 			if (props.onChange) {
-				props.onChange(newDate.toISOString());
+				props.onChange(newDate);
 			}
 		}
 	}),
 	lifecycle({
 		componentDidMount() {
+			if (this.props.value) {
+				this.props.setDate(this.props.value);
+			}
 			if (this.props.onChange) {
-				this.props.onChange(this.props.date.toISOString());
+				this.props.onChange(this.props.date);
 			}
 		}
 	})
 );
 
-const DatePicker = ({ name, date, label, handleChange, ...props }) => {
+const DatePicker = ({ name, value, date, label, handleChange, ...props }) => {
 	return (
 		<InputBox style={{ ...props.style }}>
 			<InputLabel>{label}</InputLabel>
-			<DatetimePickerTrigger moment={date} onChange={(newDate) => handleChange(newDate)}>
+			<DatetimePickerTrigger moment={value ? value : date} onChange={(newDate) => handleChange(newDate)}>
 				<NoBorderInput
 					maxLength="24"
 					type="text"

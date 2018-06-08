@@ -213,11 +213,11 @@ class OrderForm extends Component {
 	}
 
 	render() {
-		const { socialAccounts, amount, recipient, brandSocialAccountInput, isLoading } = this.state;
+		const { socialAccounts, amount, date, recipient, brandSocialAccountInput, isLoading } = this.state;
 		return (
 			<FormContainer>
 				<LoadingSpinner isDisplay={isLoading} />
-				<h3 style={{ textAlign: 'center', marginBottom: 24 }}>Create Order</h3>
+				<h3 style={{ textAlign: 'center', marginBottom: 24 }}>Transaction Creator</h3>
 				<SocialAccountDropdown
 					socialAccounts={socialAccounts}
 					onSelect={(data) => this.onSelectAccount(data)}
@@ -231,7 +231,7 @@ class OrderForm extends Component {
 					value={amount === 0 ? '' : amount}
 					onChange={this.onInputChange}
 				/>
-				<DatePicker label="Date :" onChange={(date) => this.setState({ date })} />
+				<DatePicker label="Date :" value={date} onChange={(newDate) => this.setState({ date:newDate })} />
 				<InputText
 					label="Recipient :"
 					name="recipient"
