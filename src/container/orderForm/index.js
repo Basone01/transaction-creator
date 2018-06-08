@@ -4,15 +4,15 @@ import React, { Component } from 'react';
 import { findInstagram } from '../../api';
 import { FormContainer, Button } from './styled';
 import BrandSocialAccount from '../../parse/BrandSocialAccount';
-import ImageUploader from '../imageUploader';
-import InputText from '../inputText';
+import ImageUploader from '../../components/imageUploader';
+import InputText from '../../components/inputText';
 import SocialAccount from '../../parse/SocialAccount';
-import SocialAccountDropdown from '../socialAccountDropdown';
+import SocialAccountDropdown from '../../components/socialAccountDropdown';
 import Transaction from '../../parse/Transaction';
 
-// import TransactionTypeSelect from './transactionTypeSelect';
-import LoadingSpinner from '../spinner';
-import DatePicker from '../datePicker';
+// import TransactionTypeSelect from './../components/transactionTypeSelect';
+import LoadingSpinner from '../../components/spinner';
+import DatePicker from '../../components/datePicker';
 import moment from 'moment';
 import swal from 'sweetalert';
 class OrderForm extends Component {
@@ -47,7 +47,14 @@ class OrderForm extends Component {
 	}
 
 	validateData() {
-		const { selectedSocialAccount, amount, date, recipient, transactionSlipFile, brandSocialAccountInput } = this.state;
+		const {
+			selectedSocialAccount,
+			amount,
+			date,
+			recipient,
+			transactionSlipFile,
+			brandSocialAccountInput
+		} = this.state;
 
 		if (!selectedSocialAccount) {
 			const errorMessage = 'No social account selected';
@@ -133,7 +140,7 @@ class OrderForm extends Component {
 				() => {
 					const order = new Transaction();
 					order.selectAndSetValueFromState(this.state);
-					console.log(order)
+					console.log(order);
 					order.save(null, {
 						success: function(order) {
 							selfRef.setState({ isLoading: false });
@@ -204,7 +211,7 @@ class OrderForm extends Component {
 					label="Amount :"
 					name="amount"
 					type="number"
-					placeholder="Amount"
+					placeholder="฿ Amount"
 					min={0}
 					value={amount === 0 ? '' : amount}
 					onChange={this.onInputChange}

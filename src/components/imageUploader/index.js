@@ -1,6 +1,6 @@
 import { compose, withState, withHandlers } from 'recompose';
 import Parse from 'parse';
-import React, { Component } from 'react';
+import React from 'react';
 
 import { Flex, ImageDisplay, ImageInputLabel } from './styled';
 

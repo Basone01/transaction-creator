@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import OrderForm from './components/orderForm/';
+import OrderForm from './container/orderForm/';
 
 class App extends Component {
 	componentDidMount() {
