@@ -1,13 +1,15 @@
 import Parse from 'parse';
 import React, { Component } from 'react';
+
 import { findInstagram } from '../../api';
 import { FormContainer, Button } from './styled';
+import BrandSocialAccount from '../../parse/BrandSocialAccount';
 import ImageUploader from '../imageUploader';
 import InputText from '../inputText';
-import Transaction from '../../parse/Transaction';
-import SocialAccountDropdown from '../socialAccountDropdown';
 import SocialAccount from '../../parse/SocialAccount';
-import BrandSocialAccount from '../../parse/BrandSocialAccount';
+import SocialAccountDropdown from '../socialAccountDropdown';
+import Transaction from '../../parse/Transaction';
+
 // import TransactionTypeSelect from './transactionTypeSelect';
 import LoadingSpinner from '../spinner';
 import DatePicker from '../datePicker';
@@ -190,7 +192,6 @@ class OrderForm extends Component {
 
 	render() {
 		const { socialAccounts, amount, recipient, brandSocialAccountInput, isLoading } = this.state;
-
 		return (
 			<FormContainer>
 				<LoadingSpinner isDisplay={isLoading} />

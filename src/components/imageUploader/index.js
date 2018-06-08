@@ -1,84 +1,75 @@
-import React, { Component } from 'react';
+import { compose, withState, withHandlers } from 'recompose';
 import Parse from 'parse';
+import React, { Component } from 'react';
+
 import { Flex, ImageDisplay, ImageInputLabel } from './styled';
-export default class ImageUpoader extends Component {
-	state = {
-		isFileLoading: false,
-		display_image: '',
-		file: ''
-	};
 
-	onImageChange(e) {
-		if (e.target.files && e.target.files[0]) {
-			let reader = new FileReader();
-			this.setState({
-				isFileLoading: true
-			});
-			reader.onload = (e) => {
-				if (!e.target.result.includes('data:image')) {
-					this.setState({
-						isFileLoading: false
-					});
-					return;
-				}
-				//upload start
-				const file = new Parse.File('file', {
-					base64: e.target.result
-				});
-				file
-					.save()
-					.then((upoaded_file) => {
-						//upload success
-						this.setState({
-							display_image: upoaded_file._url,
-							file: upoaded_file,
-							isFileLoading: false
-						});
-						if (this.props.onImageChange) {
-							this.props.onImageChange(upoaded_file);
-						}
-					})
-					.catch((e) => {
-						//upload failed
-						console.log(e);
+const enhance = compose(
+	withState('isFileLoading', 'setIsFileLoading', false),
+	withState('display_image', 'setDisplay_image', ''),
+	withState('file', 'setFile', ''),
+	withHandlers({
+		onImageChange: ({ setIsFileLoading, setDisplay_image, setFile, onImageChange }) => (e) => {
+			if (e.target.files && e.target.files[0]) {
+				let reader = new FileReader();
+				setIsFileLoading(true);
+				reader.onload = (e) => {
+					if (!e.target.result.includes('data:image')) {
 						this.setState({
 							isFileLoading: false
 						});
+						return;
+					}
+					//upload start
+					const file = new Parse.File('file', {
+						base64: e.target.result
 					});
-			};
-			reader.onerror = (e) => {
-				this.setState({
-					isFileLoading: false
-				});
-			};
-			reader.readAsDataURL(e.target.files[0]);
+					file
+						.save()
+						.then((upoaded_file) => {
+							//upload success
+							setIsFileLoading(false);
+							setDisplay_image(upoaded_file._url);
+							setFile(upoaded_file);
+							if (onImageChange) {
+								onImageChange(upoaded_file);
+							}
+						})
+						.catch((e) => {
+							//upload failed
+							console.log(e);
+							setIsFileLoading(false);
+						});
+				};
+				reader.onerror = (e) => {
+					setIsFileLoading(false);
+				};
+				reader.readAsDataURL(e.target.files[0]);
+			}
+		},
+		onImageClick: ({ onImageClick, setDisplay_image, setFile }) => () => {
+			setDisplay_image('');
+			setFile('');
+			if (onImageClick) {
+				onImageClick();
+			}
 		}
-	}
+	})
+);
 
-	onImageClick() {
-		this.setState({
-			display_image: '',
-			file: ''
-		});
-		if (this.props.onImageClick) {
-			this.props.onImageClick();
-		}
-	}
+const ImageUploader = ({ name, display_image, isFileLoading, file, onImageChange, onImageClick }) => {
+	return (
+		<Flex jc="center">
+			{display_image ? (
+				<ImageDisplay src={display_image} alt="" onClick={onImageClick} />
+			) : (
+				<ImageInputLabel isLoading={isFileLoading}>
+					Click to Upload Slip
+					<input name={name} type="file" value={file} onChange={onImageChange} />
+				</ImageInputLabel>
+			)}
+		</Flex>
+	);
+};
 
-	render() {
-		const { name } = this.props;
-		const { display_image, isFileLoading, file } = this.state;
-		return (
-			<Flex jc="center">
-				{display_image ? (
-					<ImageDisplay src={display_image} alt="" onClick={this.onImageClick.bind(this)} />
-				) : (
-					<ImageInputLabel isLoading={isFileLoading}>
-						Click to Upload Slip
-						<input name={name} type="file" value={file} onChange={this.onImageChange.bind(this)} />
-					</ImageInputLabel>
-				)}
-			</Flex>
-		);
-	}
-}
+export default enhance(ImageUploader);
