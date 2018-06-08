@@ -1,10 +1,8 @@
-import { compose, withState, withHandlers,lifecycle } from 'recompose';
+import { compose, withState, withHandlers, lifecycle } from 'recompose';
 import { DatetimePickerTrigger } from 'rc-datetime-picker';
 import moment from 'moment';
 import React from 'react';
-
 import 'rc-datetime-picker/dist/picker.min.css';
-
 import { InputBox, InputLabel, NoBorderInput } from './styled';
 
 const enhance = compose(
