@@ -4,11 +4,11 @@ import { findInstagram } from '../../api';
 import { FormContainer, Button } from './styled';
 import ImageUploader from './imageUploader';
 import InputText from './inputText';
-import Order from '../../parse/Order';
+import Transaction from '../../parse/Transaction';
 import SocialAccountDropdown from './socialAccountDropdown';
 import SocialAccount from '../../parse/SocialAccount';
 import BrandSocialAccount from '../../parse/BrandSocialAccount';
-import OrderTypeSelect from './orderTypeSelect';
+// import TransactionTypeSelect from './transactionTypeSelect';
 import LoadingSpinner from './spinner';
 import DatePicker from './datePicker';
 import moment from 'moment';
@@ -17,12 +17,12 @@ class OrderForm extends Component {
 	state = {
 		socialAccounts: [],
 		selectedSocialAccount: null,
-		value: 0,
+		amount: 0,
 		date: moment(),
 		recipient: '',
 		brandSocialAccountInput: '',
-		slipFile: '',
-		orderType: 1,
+		transactionSlipFile: '',
+		transactionType: 6,
 		error: '',
 		isLoading: false
 	};
@@ -45,7 +45,7 @@ class OrderForm extends Component {
 	}
 
 	validateData() {
-		const { selectedSocialAccount, value, date, recipient, slipFile, brandSocialAccountInput } = this.state;
+		const { selectedSocialAccount, amount, date, recipient, transactionSlipFile, brandSocialAccountInput } = this.state;
 
 		if (!selectedSocialAccount) {
 			const errorMessage = 'No social account selected';
@@ -54,8 +54,8 @@ class OrderForm extends Component {
 			});
 			return errorMessage;
 		}
-		if (!value) {
-			const errorMessage = 'Value is 0';
+		if (!amount) {
+			const errorMessage = 'Amount is 0';
 			this.setState({
 				error: errorMessage
 			});
@@ -82,7 +82,7 @@ class OrderForm extends Component {
 			});
 			return errorMessage;
 		}
-		if (!slipFile) {
+		if (!transactionSlipFile) {
 			const errorMessage = 'No slip uploaded';
 			this.setState({
 				error: errorMessage
@@ -129,8 +129,9 @@ class OrderForm extends Component {
 					brandSocialAccount: brand
 				}),
 				() => {
-					const order = new Order();
+					const order = new Transaction();
 					order.selectAndSetValueFromState(this.state);
+					console.log(order)
 					order.save(null, {
 						success: function(order) {
 							selfRef.setState({ isLoading: false });
@@ -158,7 +159,7 @@ class OrderForm extends Component {
 
 	onInputChange(e) {
 		let value =
-			e.target.type === 'number' || e.target.name === 'orderType' ? Number(e.target.value) : e.target.value;
+			e.target.type === 'number' || e.target.name === 'transactionType' ? Number(e.target.value) : e.target.value;
 
 		this.setState({
 			[e.target.name]: value,
@@ -171,13 +172,13 @@ class OrderForm extends Component {
 
 	onImageChange(file) {
 		this.setState({
-			slipFile: file
+			transactionSlipFile: file
 		});
 	}
 
 	onImageClick() {
 		this.setState({
-			slipFile: ''
+			transactionSlipFile: ''
 		});
 	}
 
@@ -188,7 +189,7 @@ class OrderForm extends Component {
 	}
 
 	render() {
-		const { socialAccounts, value, date, recipient, brandSocialAccountInput, isLoading } = this.state;
+		const { socialAccounts, amount, date, recipient, brandSocialAccountInput, isLoading } = this.state;
 
 		return (
 			<FormContainer>
@@ -199,22 +200,15 @@ class OrderForm extends Component {
 					onSelect={(data) => this.onSelectAccount(data)}
 				/>
 				<InputText
-					label="Value :"
-					name="value"
+					label="Amount :"
+					name="amount"
 					type="number"
-					placeholder="Value"
+					placeholder="Amount"
 					min={0}
-					value={value === 0 ? '' : value}
+					value={amount === 0 ? '' : amount}
 					onChange={this.onInputChange}
 				/>
-				{/* <InputText
-					label="Date :"
-					name="date"
-					type="datetime-local"
-					value={date}
-					onChange={this.onInputChange}
-				/> */}
-				<DatePicker selected={date} name="date" onChange={(date) => this.setState({ date })} />
+				<DatePicker label="Date :" onChange={(date) => this.setState({ date })} />
 				<InputText
 					label="Recipient :"
 					name="recipient"
@@ -232,9 +226,9 @@ class OrderForm extends Component {
 					onChange={this.onInputChange}
 				/>
 
-				<OrderTypeSelect name="orderType" label="OrderType :" onChange={this.onInputChange} />
+				{/* <transactionTypeSelect name="transactionType" label="transactionType :" onChange={this.onInputChange} /> */}
 				<ImageUploader
-					name="slipFile"
+					name="transactionSlipFile"
 					onImageChange={(file) => this.onImageChange(file)}
 					onImageClick={() => this.onImageClick()}
 				/>
