@@ -10,13 +10,15 @@ import SocialAccount from '../../parse/SocialAccount';
 import BrandSocialAccount from '../../parse/BrandSocialAccount';
 import OrderTypeSelect from './orderTypeSelect';
 import LoadingSpinner from './spinner';
+import DatePicker from './datePicker';
+import moment from 'moment';
 import swal from 'sweetalert';
 class OrderForm extends Component {
 	state = {
 		socialAccounts: [],
 		selectedSocialAccount: null,
 		value: 0,
-		date: new Date(Date.now() + 1000 * 60 * 60 * 7).toISOString().substring(0, 16),
+		date: moment(),
 		recipient: '',
 		brandSocialAccountInput: '',
 		slipFile: '',
@@ -205,14 +207,14 @@ class OrderForm extends Component {
 					value={value === 0 ? '' : value}
 					onChange={this.onInputChange}
 				/>
-				<InputText
+				{/* <InputText
 					label="Date :"
 					name="date"
 					type="datetime-local"
 					value={date}
 					onChange={this.onInputChange}
-				/>
-
+				/> */}
+				<DatePicker selected={date} name="date" onChange={(date) => this.setState({ date })} />
 				<InputText
 					label="Recipient :"
 					name="recipient"
