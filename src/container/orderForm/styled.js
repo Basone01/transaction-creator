@@ -14,7 +14,7 @@ export const FormContainer = styled.div`
 		margin-bottom: 12px;
 	}
 	@media screen and (max-width: 768px) {
-		max-width: 100%;
+		max-width: 95%;
 		padding: 12px 32px 24px 32px;
 	}
 	@media screen and (max-width: 480px) {

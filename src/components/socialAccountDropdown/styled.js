@@ -17,8 +17,7 @@ export const SocialSelectBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	${'' /* border: 1px solid rgba(0, 0, 0, 0.15); */}
-	padding: 0;
+	${'' /* border: 1px solid rgba(0, 0, 0, 0.15); */} padding: 0;
 	&::-webkit-scrollbar {
 		display: none;
 	}
@@ -39,6 +38,7 @@ export const DropdownBox = styled.ul`
 	background-color: white;
 	max-height: 360px;
 	overflow: scroll;
+	z-index: 3;
 
 	border: 1px solid rgba(0, 0, 0, 0.15);
 	&::-webkit-scrollbar {
@@ -53,6 +53,7 @@ export const DropdownItem = styled.li`
 	display: flex;
 	padding: 6px 24px;
 	align-items: center;
+	background-color: #fff;
 	&:first-of-type {
 		padding-top: 12px;
 	}

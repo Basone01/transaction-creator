@@ -20,6 +20,7 @@ export const InputBox = styled.label`
 	flex-direction: column;
 	border: 1px solid rgba(0, 0, 0, 0.15);
 	padding: 6px 24px;
+	
 `;
 
 export const InputLabel = styled.span`

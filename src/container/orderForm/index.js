@@ -35,6 +35,7 @@ class OrderForm extends Component {
 		this.add = this.submitOrder.bind(this);
 		this.onInputChange = this.onInputChange.bind(this);
 		this.submitOrder = this.submitOrder.bind(this);
+		this.reset = this.reset.bind(this);
 	}
 
 	componentDidMount() {
@@ -166,6 +167,20 @@ class OrderForm extends Component {
 		}
 	}
 
+	reset() {
+		this.setState({
+			selectedSocialAccount: null,
+			amount: 0,
+			date: moment(),
+			recipient: '',
+			brandSocialAccountInput: '',
+			transactionSlipFile: '',
+			transactionType: 6,
+			error: '',
+			isLoading: false
+		});
+	}
+
 	onInputChange(e) {
 		let value =
 			e.target.type === 'number' || e.target.name === 'transactionType' ? Number(e.target.value) : e.target.value;
@@ -243,6 +258,9 @@ class OrderForm extends Component {
 
 				<Button onClick={this.submitOrder} style={{ margin: '0 24px' }}>
 					Submit
+				</Button>
+				<Button onClick={this.reset} style={{ margin: '12px 24px', opacity: 0.5 }}>
+					Reset
 				</Button>
 			</FormContainer>
 		);
