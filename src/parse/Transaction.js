@@ -2,7 +2,7 @@ import Parse from 'parse';
 
 export default class Transaction extends Parse.Object {
 	constructor() {
-		super('Order');
+		super('Transaction');
 	}
 	selectAndSetValueFromState(state) {
 		const {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import SocialSelectItem from './socialAccountDropdownItem';
+import { DropdownBox, InputBox, InputLabel, SocialSelectBox } from './styled';
 
 export default class SocialAccountDropdown extends Component {
 	state = {
@@ -56,7 +56,7 @@ export default class SocialAccountDropdown extends Component {
 		return (
 			<InputBox>
 				<SocialSelectBox onClick={this.open}>
-				<InputLabel>Social Account :</InputLabel>
+					<InputLabel>Social Account :</InputLabel>
 					<SocialSelectItem account={pureSocialData[selected]} />
 					{isOpen && <DropdownBox>{dropdownItem}</DropdownBox>}
 				</SocialSelectBox>
@@ -64,52 +64,3 @@ export default class SocialAccountDropdown extends Component {
 		);
 	}
 }
-
-//style
-const InputBox = styled.label`
-	display: flex;
-	flex-direction: column;
-	border: 1px solid rgba(0, 0, 0, 0.15);
-`;
-const InputLabel = styled.span`
-	line-height: 24px;
-	font-size: 14px;
-	padding:6px 24px;
-`;
-export const SocialSelectBox = styled.div`
-	position: relative;
-	min-height: 64px;
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	border: 1px solid rgba(0, 0, 0, 0.15);
-	padding: 0;
-	&::-webkit-scrollbar {
-		display: none;
-	}
-`;
-
-export const DropdownBox = styled.ul`
-	padding: 0;
-	margin: 0;
-	position: absolute;
-
-	top: 100%;
-	left: 0;
-	right: 0;
-
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	background-color: white;
-	max-height: 360px;
-	overflow: scroll;
-
-	border: 1px solid rgba(0, 0, 0, 0.15);
-	&::-webkit-scrollbar {
-		display: none;
-	}
-	& > * {
-		flex-shrink: 0;
-	}
-`;

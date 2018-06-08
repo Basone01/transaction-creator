@@ -1,7 +1,5 @@
-export const findBrandSocialAccount = (username) => {
-	return;
-};
+import config from '../config';
 
 export const findInstagram = (username) => {
-	return fetch('http://bearboost.co/checkig/' + username).then((res) => res.json());
+	return fetch(config.CHECK_IG_API + username).then((res) => res.json());
 };
