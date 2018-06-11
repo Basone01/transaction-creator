@@ -9,7 +9,7 @@ export default class Transaction extends Parse.Object {
 			selectedSocialAccount,
 			amount,
 			date,
-			transactionSlipFile,
+			transferSlipFile,
 			recipient,
 			brandSocialAccount,
 			transactionType
@@ -17,7 +17,7 @@ export default class Transaction extends Parse.Object {
 		this.set('socialAccount', selectedSocialAccount);
 		this.set('amount', amount);
 		this.set('date', new Date(date));
-		this.set('transactionSlipFile', transactionSlipFile);
+		this.set('transferSlipFile', transferSlipFile);
 		this.set('recipient', recipient);
 		this.set('brandSocialAccount', brandSocialAccount);
 		this.set('transactionType', transactionType);

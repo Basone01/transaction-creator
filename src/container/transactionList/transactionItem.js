@@ -2,7 +2,7 @@ import React from 'react';
 import { ProfileImage, SectionBox, BoldText, DateAndAmount } from './styled';
 import moment from 'moment';
 
-const TransactionItem = ({ socialAccount, brandSocialAccount, amount, date, recipient, transactionSlipFile }) => {
+const TransactionItem = ({ socialAccount, brandSocialAccount, amount, date, recipient, transferSlipFile }) => {
 	return (
 		<div style={{ position: 'relative', padding: '16px 0' }}>
 			<SectionBox>

@@ -1,19 +1,21 @@
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 import Parse from 'parse';
 import React, { Component } from 'react';
+import swal from 'sweetalert';
 
 import { findInstagram } from '../../api';
-import { FormContainer, Button } from './styled';
+import { BigButton, Scroller } from '../../sharedStyle';
+import { FlexDown, Flex } from '../../sharedStyle';
 import BrandSocialAccount from '../../parse/BrandSocialAccount';
+import DatePicker from '../../components/datePicker';
 import ImageUploader from '../../components/imageUploader';
 import InputText from '../../components/inputText';
+import LoadingSpinner from '../../components/spinner';
 import SocialAccount from '../../parse/SocialAccount';
 import SocialAccountDropdown from '../../components/socialAccountDropdown';
 import Transaction from '../../parse/Transaction';
 
-import LoadingSpinner from '../../components/spinner';
-import DatePicker from '../../components/datePicker';
-import moment from 'moment';
-import swal from 'sweetalert';
 class TransactionForm extends Component {
 	state = {
 		socialAccounts: [],
@@ -22,7 +24,7 @@ class TransactionForm extends Component {
 		date: moment(new Date().toUTCString()),
 		recipient: '',
 		brandSocialAccountInput: '',
-		transactionSlipFile: '',
+		transferSlipFile: '',
 		transactionType: 6,
 		error: '',
 		isLoading: false
@@ -48,14 +50,7 @@ class TransactionForm extends Component {
 	}
 
 	validateData() {
-		const {
-			selectedSocialAccount,
-			amount,
-			date,
-			recipient,
-			transactionSlipFile,
-			brandSocialAccountInput
-		} = this.state;
+		const { selectedSocialAccount, amount, recipient, transferSlipFile, brandSocialAccountInput } = this.state;
 
 		if (!selectedSocialAccount) {
 			const errorMessage = 'No social account selected';
@@ -85,7 +80,7 @@ class TransactionForm extends Component {
 			});
 			return errorMessage;
 		}
-		if (!transactionSlipFile) {
+		if (!transferSlipFile) {
 			const errorMessage = 'No slip uploaded';
 			this.setState({
 				error: errorMessage
@@ -137,7 +132,7 @@ class TransactionForm extends Component {
 					console.log(order);
 					order.save(null, {
 						success: function(order) {
-							selfRef.setState({ isLoading: false });
+							selfRef.reset();
 							swal({
 								title: 'OK!',
 								text: 'Order Created',
@@ -169,7 +164,7 @@ class TransactionForm extends Component {
 			date: currentTime,
 			recipient: '',
 			brandSocialAccountInput: '',
-			transactionSlipFile: '',
+			transferSlipFile: '',
 			transactionType: 6,
 			error: '',
 			isLoading: false
@@ -191,13 +186,13 @@ class TransactionForm extends Component {
 
 	onImageChange(file) {
 		this.setState({
-			transactionSlipFile: file
+			transferSlipFile: file
 		});
 	}
 
 	onImageClick() {
 		this.setState({
-			transactionSlipFile: ''
+			transferSlipFile: ''
 		});
 	}
 
@@ -210,54 +205,60 @@ class TransactionForm extends Component {
 	render() {
 		const { socialAccounts, amount, date, recipient, brandSocialAccountInput, isLoading } = this.state;
 		return (
-			<FormContainer>
+			<FlexDown>
+				<Flex ait="center" jc="space-between">
+					<Link to="/transactions">List</Link>
+					<h2 style={{ textAlign: 'center' }}>Transaction Creator</h2>
+					<span>.....</span>
+				</Flex>
 				<LoadingSpinner isDisplay={isLoading} />
-				<h3 style={{ textAlign: 'center', marginBottom: 24 }}>Transaction Creator</h3>
-				<SocialAccountDropdown
-					socialAccounts={socialAccounts}
-					onSelect={(data) => this.onSelectAccount(data)}
-				/>
-				<InputText
-					label="Amount :"
-					name="amount"
-					type="number"
-					placeholder="฿ Amount"
-					min={0}
-					value={amount === 0 ? '' : amount}
-					onChange={this.onInputChange}
-				/>
-				<DatePicker label="Date :" value={date} onChange={(newDate) => this.setState({ date: newDate })} />
-				<InputText
-					label="Recipient :"
-					name="recipient"
-					placeholder="Recipient"
-					type="text"
-					value={recipient}
-					onChange={this.onInputChange}
-				/>
-				<InputText
-					label="Brand Social Account :"
-					name="brandSocialAccountInput"
-					placeholder="Brand Social Account"
-					type="text"
-					value={brandSocialAccountInput}
-					onChange={this.onInputChange}
-				/>
+				<Scroller style={{flexGrow:1}}>
+					<SocialAccountDropdown
+						socialAccounts={socialAccounts}
+						onSelect={(data) => this.onSelectAccount(data)}
+					/>
+					<InputText
+						label="Amount :"
+						name="amount"
+						type="number"
+						placeholder="฿ Amount"
+						min={0}
+						value={amount === 0 ? '' : amount}
+						onChange={this.onInputChange}
+					/>
+					<DatePicker label="Date :" value={date} onChange={(newDate) => this.setState({ date: newDate })} />
+					<InputText
+						label="Recipient :"
+						name="recipient"
+						placeholder="Recipient"
+						type="text"
+						value={recipient}
+						onChange={this.onInputChange}
+					/>
+					<InputText
+						label="Brand Social Account :"
+						name="brandSocialAccountInput"
+						placeholder="Brand Social Account"
+						type="text"
+						value={brandSocialAccountInput}
+						onChange={this.onInputChange}
+					/>
 
-				{/* <transactionTypeSelect name="transactionType" label="transactionType :" onChange={this.onInputChange} /> */}
-				<ImageUploader
-					name="transactionSlipFile"
-					onImageChange={(file) => this.onImageChange(file)}
-					onImageClick={() => this.onImageClick()}
-				/>
+					{/* <transactionTypeSelect name="transactionType" label="transactionType :" onChange={this.onInputChange} /> */}
+					<ImageUploader
+						name="transferSlipFile"
+						onImageChange={(file) => this.onImageChange(file)}
+						onImageClick={() => this.onImageClick()}
+					/>
 
-				<Button onClick={this.submitOrder} style={{ margin: '0 24px' }}>
-					Submit
-				</Button>
-				<Button onClick={this.reset} style={{ margin: '12px 24px', opacity: 0.5 }}>
-					Reset
-				</Button>
-			</FormContainer>
+					<BigButton onClick={this.submitOrder} style={{ margin: '0 24px' }}>
+						Submit
+					</BigButton>
+					<BigButton onClick={this.reset} style={{ margin: '12px 24px', opacity: 0.5 }}>
+						Reset
+					</BigButton>
+				</Scroller>
+			</FlexDown>
 		);
 	}
 }

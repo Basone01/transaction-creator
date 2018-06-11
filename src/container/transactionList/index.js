@@ -1,9 +1,11 @@
-import React from 'react';
 import { compose, withState, lifecycle, withProps } from 'recompose';
-import Transaction from '../../parse/Transaction';
+import { Link } from 'react-router-dom';
 import { Query } from 'parse';
+import React from 'react';
+
+import { FlexDown, Scroller, Flex } from '../../sharedStyle';
+import Transaction from '../../parse/Transaction';
 import TransactionItem from './transactionItem';
-import { TransactionListContainer, Scroller } from './styled';
 
 const enhance = compose(
 	withState('transactions', 'setTransactions', []),
@@ -28,10 +30,14 @@ const enhance = compose(
 
 const TransactionList = (props) => {
 	return (
-		<TransactionListContainer>
-			<h2 style={{ textAlign: 'center' }}>Transaction List</h2>
+		<FlexDown style={{ flexGrow:1 }}>
+			<Flex ait="center" jc="space-between">
+				<Link to="/">Add</Link>
+				<h2 style={{ textAlign: 'center' }}>Transaction List</h2>
+				<span>.....</span>
+			</Flex>
 			<Scroller>{props.transactionsList}</Scroller>
-		</TransactionListContainer>
+		</FlexDown>
 	);
 };
 
