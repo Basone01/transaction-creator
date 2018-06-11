@@ -19,7 +19,7 @@ class TransactionForm extends Component {
 		socialAccounts: [],
 		selectedSocialAccount: null,
 		amount: 0,
-		date: moment(),
+		date: moment(new Date().toUTCString()),
 		recipient: '',
 		brandSocialAccountInput: '',
 		transactionSlipFile: '',
@@ -35,6 +35,7 @@ class TransactionForm extends Component {
 		this.onInputChange = this.onInputChange.bind(this);
 		this.submitOrder = this.submitOrder.bind(this);
 		this.reset = this.reset.bind(this);
+		console.log(999, this.state.date);
 	}
 
 	componentDidMount() {
@@ -65,13 +66,6 @@ class TransactionForm extends Component {
 		}
 		if (!amount) {
 			const errorMessage = 'Amount is 0';
-			this.setState({
-				error: errorMessage
-			});
-			return errorMessage;
-		}
-		if (new Date(date) - new Date() < 0) {
-			const errorMessage = 'Date must be in future';
 			this.setState({
 				error: errorMessage
 			});
@@ -167,17 +161,19 @@ class TransactionForm extends Component {
 	}
 
 	reset() {
-		this.setState({
+		const currentTime = moment(new Date().toUTCString());
+		console.log('curr', currentTime);
+		this.setState((state) => ({
 			selectedSocialAccount: null,
 			amount: 0,
-			date: moment(),
+			date: currentTime,
 			recipient: '',
 			brandSocialAccountInput: '',
 			transactionSlipFile: '',
 			transactionType: 6,
 			error: '',
 			isLoading: false
-		});
+		}));
 	}
 
 	onInputChange(e) {
@@ -230,7 +226,7 @@ class TransactionForm extends Component {
 					value={amount === 0 ? '' : amount}
 					onChange={this.onInputChange}
 				/>
-				<DatePicker label="Date :" value={date} onChange={(newDate) => this.setState({ date:newDate })} />
+				<DatePicker label="Date :" value={date} onChange={(newDate) => this.setState({ date: newDate })} />
 				<InputText
 					label="Recipient :"
 					name="recipient"

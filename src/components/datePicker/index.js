@@ -6,11 +6,11 @@ import 'rc-datetime-picker/dist/picker.min.css';
 import { InputBox, InputLabel, NoBorderInput } from './styled';
 
 const enhance = compose(
-	withState('date', 'setDate', moment()),
+	withState('date', 'setDate', moment(new Date().toUTCString())),
 	withHandlers({
 		handleChange: (props) => (newDate) => {
 			props.setDate(newDate);
-			console.log(newDate)
+			console.log(newDate);
 			if (props.onChange) {
 				props.onChange(newDate);
 			}
@@ -29,14 +29,15 @@ const enhance = compose(
 );
 
 const DatePicker = ({ name, value, date, label, handleChange, ...props }) => {
+	const display = value ? value : date;
 	return (
 		<InputBox style={{ ...props.style }}>
 			<InputLabel>{label}</InputLabel>
-			<DatetimePickerTrigger moment={value ? value : date} onChange={(newDate) => handleChange(newDate)}>
+			<DatetimePickerTrigger moment={display} onChange={(newDate) => handleChange(newDate)}>
 				<NoBorderInput
 					maxLength="24"
 					type="text"
-					value={moment.weekdays(date.weekday()) + ' ' + date.format('DD/MM/YYYY HH:mm')}
+					value={moment.weekdays(display.weekday()) + ' ' + display.format('DD/MM/YYYY HH:mm')}
 					name={name}
 					readOnly
 				/>

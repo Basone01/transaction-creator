@@ -1,17 +1,22 @@
 import React from 'react';
 import { compose, withState, lifecycle, withProps } from 'recompose';
 import Transaction from '../../parse/Transaction';
-import Parse, { Query } from 'parse';
+import { Query } from 'parse';
 import TransactionItem from './transactionItem';
-import { TransactionListContainer } from './styled';
+import { TransactionListContainer, Scroller } from './styled';
 
 const enhance = compose(
 	withState('transactions', 'setTransactions', []),
 	lifecycle({
 		async componentDidMount() {
 			const query = new Query(Transaction);
-			const transactions = await query.include('brandSocialAccount', 'socialAccount').find();
-			this.props.setTransactions(transactions);
+			try {
+				const transactions = await query.include('brandSocialAccount', 'socialAccount').find();
+				console.log(transactions);
+				this.props.setTransactions(transactions);
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	}),
 	withProps((props) => ({
@@ -22,10 +27,12 @@ const enhance = compose(
 );
 
 const TransactionList = (props) => {
-	return <TransactionListContainer>
-        <h1 style={{textAlign:'center'}}>Transaction List</h1>
-        {props.transactionsList}
-    </TransactionListContainer>;
+	return (
+		<TransactionListContainer>
+			<h2 style={{ textAlign: 'center' }}>Transaction List</h2>
+			<Scroller>{props.transactionsList}</Scroller>
+		</TransactionListContainer>
+	);
 };
 
 export default enhance(TransactionList);
