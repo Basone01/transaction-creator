@@ -10,7 +10,6 @@ import SocialAccount from '../../parse/SocialAccount';
 import SocialAccountDropdown from '../../components/socialAccountDropdown';
 import Transaction from '../../parse/Transaction';
 
-// import TransactionTypeSelect from './../components/transactionTypeSelect';
 import LoadingSpinner from '../../components/spinner';
 import DatePicker from '../../components/datePicker';
 import moment from 'moment';
