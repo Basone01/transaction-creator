@@ -215,7 +215,7 @@ class OrderForm extends Component {
 		const { socialAccounts, amount, date, recipient, brandSocialAccountInput, isLoading } = this.state;
 		return (
 			<FormContainer>
-				<LoadingSpinner isDisplay={!isLoading} />
+				<LoadingSpinner isDisplay={isLoading} />
 				<h3 style={{ textAlign: 'center', marginBottom: 24 }}>Transaction Creator</h3>
 				<SocialAccountDropdown
 					socialAccounts={socialAccounts}

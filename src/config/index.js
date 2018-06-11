@@ -1,6 +1,6 @@
 module.exports = {
-	PARSE_APP_ID: '',
-	PARSE_JS_KEY: '',
-	PARSE_SERVER_URL: '',
-	CHECK_IG_API:""
+	PARSE_APP_ID: process.env.REACT_APP_PARSE_APP_ID,
+	PARSE_JS_KEY: process.env.REACT_APP_PARSE_JS_KEY,
+	PARSE_SERVER_URL: process.env.REACT_APP_PARSE_SERVER_URL,
+	CHECK_IG_API:process.env.REACT_APP_CHECK_IG_API
 };
