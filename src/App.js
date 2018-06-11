@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import OrderForm from './container/orderForm/';
+import TransactionForm from './container/transactionForm/';
+import TransactionList from './container/transactionList/';
 
+import { Switch, Route, Redirect } from 'react-router-dom';
 class App extends Component {
 	render() {
-		return <OrderForm />;
+		return (
+			<Switch>
+				<Route exact path="/" component={TransactionForm} />
+				<Route exact path="/transactions" component={TransactionList} />
+				<Redirect to="/" />
+			</Switch>
+		);
 	}
 }
 

@@ -14,7 +14,7 @@ import LoadingSpinner from '../../components/spinner';
 import DatePicker from '../../components/datePicker';
 import moment from 'moment';
 import swal from 'sweetalert';
-class OrderForm extends Component {
+class TransactionForm extends Component {
 	state = {
 		socialAccounts: [],
 		selectedSocialAccount: null,
@@ -266,4 +266,4 @@ class OrderForm extends Component {
 	}
 }
 
-export default OrderForm;
+export default TransactionForm;
