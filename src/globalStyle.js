@@ -4,4 +4,7 @@ injectGlobal`
     *{
         font-family: 'Prompt', 'sans-serif';
     }
+    a{
+        color:black;
+    }
 `;

@@ -25,7 +25,7 @@ const Spinner = styled.span`
 	font-weight:bold;
 	&::after {
 		content: '';
-		@keyframes spin {
+		@keyframes bumping {
 			0%,
 			100% {
 				border-radius: 50%;
@@ -44,7 +44,7 @@ const Spinner = styled.span`
 		right: 0;
 		bottom: 0;
 		background-color: rgba(0, 0, 0, 0.3);
-		animation: spin 1s infinite ease-in-out;
+		animation: bumping 1s infinite ease-in-out;
 	}
 `;
 const LoadingSpinner = ({ isDisplay = false }) => {

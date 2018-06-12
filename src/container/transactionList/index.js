@@ -6,37 +6,49 @@ import React from 'react';
 import { FlexDown, Scroller, Flex } from '../../sharedStyle';
 import Transaction from '../../parse/Transaction';
 import TransactionItem from './transactionItem';
-
+import LoadingSpinner from '../../components/spinner';
 const enhance = compose(
 	withState('transactions', 'setTransactions', []),
+	withState('isLoading', 'setLoading', false),
 	lifecycle({
 		async componentDidMount() {
+			this.props.setLoading(true);
 			const query = new Query(Transaction);
 			try {
 				const transactions = await query.include('brandSocialAccount', 'socialAccount').find();
 				console.log(transactions);
 				this.props.setTransactions(transactions);
+				this.props.setLoading(false);
 			} catch (error) {
+				this.props.setLoading(false);
 				console.log(error);
 			}
 		}
 	}),
 	withProps((props) => ({
-		transactionsList: props.transactions.map((transaction, i) => (
-			<TransactionItem key={i} {...transaction.attributes} />
-		))
+		transactionsList:
+			props.transactions.length > 0 ? (
+				props.transactions.map((transaction, i) => <TransactionItem key={i} {...transaction.attributes} />)
+			) : (
+				<span style={{ textAlign: 'center' }}>no transaction available</span>
+			)
 	}))
 );
 
 const TransactionList = (props) => {
+	const { transactionsList, isLoading } = props;
 	return (
-		<FlexDown style={{ flexGrow:1 }}>
-			<Flex ait="center" jc="space-between">
+		<FlexDown style={{ flexGrow: 1 }}>
+			<Flex ait="center" jc="space-between" style={{ flexShrink: 0 }}>
 				<Link to="/">Add</Link>
 				<h2 style={{ textAlign: 'center' }}>Transaction List</h2>
 				<span>.....</span>
 			</Flex>
-			<Scroller>{props.transactionsList}</Scroller>
+			{isLoading ? (
+				<LoadingSpinner isDisplay={isLoading} />
+			) : (
+				<Scroller childUnderline>{transactionsList}</Scroller>
+			)}
 		</FlexDown>
 	);
 };

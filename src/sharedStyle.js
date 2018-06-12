@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const AppContainer = styled.div`
 	display: flex;
@@ -17,16 +17,14 @@ export const AppContainer = styled.div`
 		max-width: 100%;
 		padding: 12px 12px 24px 12px;
 	}
-	max-height: 98vh;
+	max-height: 96vh;
+	min-height: 96vh;
 `;
 
 export const FlexDown = styled.div`
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	& > * {
-		margin-bottom: 12px;
-	}
 `;
 
 export const Flex = styled.div`
@@ -57,10 +55,15 @@ export const Scroller = styled.div`
 	&::-webkit-scrollbar {
 		display: none;
 	}
-	& > *:not(:last-child) {
-		border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-	}
 	& > * {
 		flex-shrink: 0;
+		margin-bottom: ${(props) => props.childMargin || 0}px;
+		${(props) =>
+			props.childUnderline &&
+			css`
+				&:not(:last-child) {
+					border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+				}
+			`};
 	}
 `;

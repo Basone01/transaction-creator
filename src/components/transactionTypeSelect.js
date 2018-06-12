@@ -6,9 +6,9 @@ const InputText = ({ label, onChange, suffix, type = 'text', ...props }) => {
 		<InputBox>
 			<InputLabel>{label}</InputLabel>
 			<select {...props} onChange={onChange} style={{ padding: '6px 24px', margin: '16px 0' }}>
-				<option value="1">Event Order</option>
-				<option value="2">Direct Order</option>
-				<option value="3">Story Order</option>
+				<option value="61">DM</option>
+				<option value="62">EVENT</option>
+				<option value="63">STORY</option>
 			</select>
 		</InputBox>
 	);

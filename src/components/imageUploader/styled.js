@@ -8,6 +8,7 @@ export const ImageInputLabel = styled.label`
 	padding: 24px;
 	user-select: none;
 	cursor: pointer;
+	position:relative;
 	& > input[type="file"] {
 		display: none;
 	}

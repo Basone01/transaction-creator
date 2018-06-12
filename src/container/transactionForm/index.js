@@ -15,7 +15,7 @@ import LoadingSpinner from '../../components/spinner';
 import SocialAccount from '../../parse/SocialAccount';
 import SocialAccountDropdown from '../../components/socialAccountDropdown';
 import Transaction from '../../parse/Transaction';
-
+import TransactionTypeSelect from '../../components/transactionTypeSelect';
 class TransactionForm extends Component {
 	state = {
 		socialAccounts: [],
@@ -25,7 +25,7 @@ class TransactionForm extends Component {
 		recipient: '',
 		brandSocialAccountInput: '',
 		transferSlipFile: '',
-		transactionType: 6,
+		transactionType: 61,
 		error: '',
 		isLoading: false
 	};
@@ -37,15 +37,19 @@ class TransactionForm extends Component {
 		this.onInputChange = this.onInputChange.bind(this);
 		this.submitOrder = this.submitOrder.bind(this);
 		this.reset = this.reset.bind(this);
-		console.log(999, this.state.date);
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		const Query = new Parse.Query(SocialAccount);
-		Query.find({
-			success: (results) => {
-				this.setState({ socialAccounts: results });
-			}
+		try {
+			const socialAccounts = await Query.find();
+			this.setState({ socialAccounts: socialAccounts });
+		} catch (error) {
+			console.error(error);
+		}
+		window.addEventListener('scroll', (e) => {
+			console.log(e);
+			console.log(1);
 		});
 	}
 
@@ -165,7 +169,7 @@ class TransactionForm extends Component {
 			recipient: '',
 			brandSocialAccountInput: '',
 			transferSlipFile: '',
-			transactionType: 6,
+			transactionType: 61,
 			error: '',
 			isLoading: false
 		}));
@@ -203,16 +207,24 @@ class TransactionForm extends Component {
 	}
 
 	render() {
-		const { socialAccounts, amount, date, recipient, brandSocialAccountInput, isLoading } = this.state;
+		const {
+			socialAccounts,
+			amount,
+			date,
+			recipient,
+			brandSocialAccountInput,
+			transactionType,
+			isLoading
+		} = this.state;
 		return (
 			<FlexDown>
-				<Flex ait="center" jc="space-between">
+				<Flex ait="center" jc="space-between" style={{ flexShrink: 0 }}>
 					<Link to="/transactions">List</Link>
 					<h2 style={{ textAlign: 'center' }}>Transaction Creator</h2>
 					<span>.....</span>
 				</Flex>
 				<LoadingSpinner isDisplay={isLoading} />
-				<Scroller style={{flexGrow:1}}>
+				<Scroller childMargin={12}>
 					<SocialAccountDropdown
 						socialAccounts={socialAccounts}
 						onSelect={(data) => this.onSelectAccount(data)}
@@ -244,7 +256,12 @@ class TransactionForm extends Component {
 						onChange={this.onInputChange}
 					/>
 
-					{/* <transactionTypeSelect name="transactionType" label="transactionType :" onChange={this.onInputChange} /> */}
+					<TransactionTypeSelect
+						name="transactionType"
+						label="Transaction Type :"
+						value={transactionType}
+						onChange={this.onInputChange}
+					/>
 					<ImageUploader
 						name="transferSlipFile"
 						onImageChange={(file) => this.onImageChange(file)}
