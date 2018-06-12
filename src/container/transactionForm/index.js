@@ -21,7 +21,7 @@ class TransactionForm extends Component {
 		socialAccounts: [],
 		selectedSocialAccount: null,
 		amount: 0,
-		date: moment(new Date().toUTCString()),
+		date: moment(),
 		recipient: '',
 		brandSocialAccountInput: '',
 		transferSlipFile: '',
@@ -47,10 +47,7 @@ class TransactionForm extends Component {
 		} catch (error) {
 			console.error(error);
 		}
-		window.addEventListener('scroll', (e) => {
-			console.log(e);
-			console.log(1);
-		});
+			
 	}
 
 	validateData() {
@@ -132,8 +129,7 @@ class TransactionForm extends Component {
 				}),
 				() => {
 					const order = new Transaction();
-					order.selectAndSetValueFromState(this.state);
-					console.log(order);
+					order.selectAndSetValueFromState({ ...this.state, date: this.state.date.toISOString() });
 					order.save(null, {
 						success: function(order) {
 							selfRef.reset();
@@ -160,12 +156,10 @@ class TransactionForm extends Component {
 	}
 
 	reset() {
-		const currentTime = moment(new Date().toUTCString());
-		console.log('curr', currentTime);
 		this.setState((state) => ({
 			selectedSocialAccount: null,
 			amount: 0,
-			date: currentTime,
+			date: moment(),
 			recipient: '',
 			brandSocialAccountInput: '',
 			transferSlipFile: '',

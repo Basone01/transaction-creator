@@ -17,6 +17,7 @@ export const ImageInputLabel = styled.label`
 		position: absolute;
 		display: ${(props) => (props.isLoading ? 'block' : 'none')};
 		padding: 16px;
+		border-radius:8px;
 		z-index: 1;
 		background-color: rgba(0, 0, 0, 0.5);
 		@keyframes spin {

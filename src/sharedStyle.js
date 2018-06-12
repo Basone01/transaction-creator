@@ -9,6 +9,7 @@ export const AppContainer = styled.div`
 	padding: 12px 48px 24px 48px;
 	border: 1px solid rgba(0, 0, 0, 0.15);
 	border-radius: 8px;
+	overflow-y: hidden;
 	@media screen and (max-width: 768px) {
 		max-width: 95%;
 		padding: 12px 32px 24px 32px;
@@ -17,8 +18,8 @@ export const AppContainer = styled.div`
 		max-width: 100%;
 		padding: 12px 12px 24px 12px;
 	}
-	max-height: 96vh;
-	min-height: 96vh;
+	max-height: 90vh;
+	min-height: 90vh;
 `;
 
 export const FlexDown = styled.div`
@@ -52,6 +53,8 @@ export const Scroller = styled.div`
 	display: flex;
 	flex-direction: column;
 	overflow-y: scroll;
+	flex-grow:1;
+	min-height:0;
 	&::-webkit-scrollbar {
 		display: none;
 	}

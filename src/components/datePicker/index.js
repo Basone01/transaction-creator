@@ -1,47 +1,43 @@
 import { compose, withState, withHandlers, lifecycle } from 'recompose';
-import { DatetimePickerTrigger } from 'rc-datetime-picker';
 import moment from 'moment';
 import React from 'react';
-import 'rc-datetime-picker/dist/picker.min.css';
 import { InputBox, InputLabel, NoBorderInput } from './styled';
 
 const enhance = compose(
-	withState('date', 'setDate', moment(new Date().toUTCString())),
+	withState('date', 'setDate', moment()),
 	withHandlers({
-		handleChange: (props) => (newDate) => {
-			props.setDate(newDate);
-			console.log(newDate);
+		handleChange: (props) => (e) => {
+			props.setDate(moment(e.target.value));
 			if (props.onChange) {
-				props.onChange(newDate);
+				props.onChange(moment(e.target.value));
 			}
 		}
 	}),
 	lifecycle({
 		componentDidMount() {
 			if (this.props.value) {
-				this.props.setDate(this.props.value);
+				this.props.setDate(moment(this.props.value));
 			}
 			if (this.props.onChange) {
-				this.props.onChange(this.props.date);
+				this.props.onChange(moment(this.props.date));
 			}
 		}
 	})
 );
 
 const DatePicker = ({ name, value, date, label, handleChange, ...props }) => {
-	const display = value ? value : date;
+	let display = value ? value : date;
+	let localeTime = display.format().slice(0, 16);
 	return (
 		<InputBox style={{ ...props.style }}>
 			<InputLabel>{label}</InputLabel>
-			<DatetimePickerTrigger moment={display} onChange={(newDate) => handleChange(newDate)}>
-				<NoBorderInput
-					maxLength="24"
-					type="text"
-					value={moment.weekdays(display.weekday()) + ' ' + display.format('DD/MM/YYYY HH:mm')}
-					name={name}
-					readOnly
-				/>
-			</DatetimePickerTrigger>
+			<NoBorderInput
+				maxLength="24"
+				type="datetime-local"
+				value={localeTime}
+				name={name}
+				onChange={handleChange}
+			/>
 		</InputBox>
 	);
 };
