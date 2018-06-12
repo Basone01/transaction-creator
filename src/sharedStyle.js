@@ -53,8 +53,8 @@ export const Scroller = styled.div`
 	display: flex;
 	flex-direction: column;
 	overflow-y: scroll;
-	flex-grow:1;
-	min-height:0;
+	flex-grow: 1;
+	min-height: 0;
 	&::-webkit-scrollbar {
 		display: none;
 	}

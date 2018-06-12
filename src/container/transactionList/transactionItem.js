@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfileImage, SectionBox, BoldText, PullLeftAndRight, MobileBR } from './styled';
+import { ProfileImage, SectionBox, BoldText, PullLeftAndRight } from './styled';
 import moment from 'moment';
 import { compose, withProps } from 'recompose';
 
@@ -9,7 +9,7 @@ const enhance = compose(
 		socialUsername: socialAccount.get('username'),
 		brandSocialUsername: brandSocialAccount.get('username'),
 		formattedDate: moment(date).format('DD/MM/YYYY HH:mm'),
-		type: transactionType === 61 ? 'DM' : transactionType === 62 ? 'EVENT' : 'STORY'
+		type: transactionType === 101 ? 'DM' : transactionType === 102 ? 'EVENT' : 'STORY'
 	}))
 );
 

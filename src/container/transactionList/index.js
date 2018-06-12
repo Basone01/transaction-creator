@@ -14,6 +14,11 @@ const enhance = compose(
 		async componentDidMount() {
 			this.props.setLoading(true);
 			const query = new Query(Transaction);
+			query.containedIn('transactionType', [
+				101,
+				102,
+				103
+			]);
 			try {
 				const transactions = await query.include('brandSocialAccount', 'socialAccount').find();
 				console.log(transactions);

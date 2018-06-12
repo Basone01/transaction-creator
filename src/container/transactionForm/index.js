@@ -25,7 +25,7 @@ class TransactionForm extends Component {
 		recipient: '',
 		brandSocialAccountInput: '',
 		transferSlipFile: '',
-		transactionType: 61,
+		transactionType: 101,
 		error: '',
 		isLoading: false
 	};
