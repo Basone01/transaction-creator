@@ -1,36 +1,63 @@
 import React from 'react';
-import { ProfileImage, SectionBox, BoldText, DateAndAmount } from './styled';
+import { ProfileImage, SectionBox, BoldText, PullLeftAndRight, MobileBR } from './styled';
 import moment from 'moment';
+import { compose, withProps } from 'recompose';
 
-const TransactionItem = ({ socialAccount, brandSocialAccount, amount, date, recipient, transferSlipFile }) => {
+const enhance = compose(
+	withProps(({ socialAccount, brandSocialAccount, transactionType, date }) => ({
+		socialProfilePic: socialAccount.get('profilePicture'),
+		socialUsername: socialAccount.get('username'),
+		brandSocialUsername: brandSocialAccount.get('username'),
+		formattedDate: moment(date).format('DD/MM/YYYY HH:mm'),
+		type: transactionType === 61 ? 'DM' : transactionType === 62 ? 'EVENT' : 'STORY'
+	}))
+);
+
+const TransactionItem = ({
+	socialProfilePic,
+	socialUsername,
+	brandSocialUsername,
+	amount,
+	formattedDate,
+	recipient,
+	transferSlipFile,
+	type
+}) => {
 	return (
 		<div style={{ position: 'relative', padding: '16px 0' }}>
-			<SectionBox>
-				<ProfileImage src={socialAccount.get('profilePicture')} />
+			<SectionBox brake>
+				<ProfileImage src={socialProfilePic} />
 				<span>
 					<BoldText>Social Account : </BoldText>
-					{socialAccount.get('username')}
+					{socialUsername}
 					<br />
-					<BoldText>Brand Social Account : </BoldText>
-					{brandSocialAccount.get('username')}
+					<BoldText>Brand Account : </BoldText>
+					{brandSocialUsername}
 				</span>
 			</SectionBox>
-			<SectionBox>
-				<BoldText>Recipient : </BoldText>
-				{recipient}
-			</SectionBox>
-			<DateAndAmount>
+			<PullLeftAndRight>
+				<SectionBox>
+					<BoldText>Type : </BoldText>
+					{type}
+				</SectionBox>
+				<SectionBox>
+					<BoldText>Recipient : </BoldText>
+					{recipient}
+				</SectionBox>
+			</PullLeftAndRight>
+
+			<PullLeftAndRight>
 				<SectionBox>
 					<BoldText>Date : </BoldText>
-					{moment(date).format('DD/MM/YYYY HH:mm')}
+					{formattedDate}
 				</SectionBox>
 				<SectionBox>
 					<BoldText>Amount : </BoldText>
 					{amount}
 				</SectionBox>
-			</DateAndAmount>
+			</PullLeftAndRight>
 		</div>
 	);
 };
 
-export default TransactionItem;
+export default enhance(TransactionItem);

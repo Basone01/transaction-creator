@@ -214,7 +214,7 @@ class TransactionForm extends Component {
 			<FlexDown>
 				<Flex ait="center" jc="space-between" style={{ flexShrink: 0 }}>
 					<Link to="/transactions">List</Link>
-					<h2 style={{ textAlign: 'center' }}>Transaction Creator</h2>
+					<h3 style={{ textAlign: 'center' }}>Transaction Creator</h3>
 					<span>.....</span>
 				</Flex>
 				<LoadingSpinner isDisplay={isLoading} />

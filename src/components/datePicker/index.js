@@ -27,14 +27,14 @@ const enhance = compose(
 
 const DatePicker = ({ name, value, date, label, handleChange, ...props }) => {
 	let display = value ? value : date;
-	let localeTime = display.format().slice(0, 16);
+	let formattedValue = display.format().slice(0, 16);
 	return (
 		<InputBox style={{ ...props.style }}>
 			<InputLabel>{label}</InputLabel>
 			<NoBorderInput
 				maxLength="24"
 				type="datetime-local"
-				value={localeTime}
+				value={formattedValue}
 				name={name}
 				onChange={handleChange}
 			/>

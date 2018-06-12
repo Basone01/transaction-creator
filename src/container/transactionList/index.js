@@ -41,7 +41,7 @@ const TransactionList = (props) => {
 		<FlexDown style={{ flexGrow: 1 }}>
 			<Flex ait="center" jc="space-between" style={{ flexShrink: 0 }}>
 				<Link to="/">Add</Link>
-				<h2 style={{ textAlign: 'center' }}>Transaction List</h2>
+				<h3 style={{ textAlign: 'center' }}>Transaction List</h3>
 				<span>.....</span>
 			</Flex>
 			{isLoading ? (
