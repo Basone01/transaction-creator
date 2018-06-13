@@ -128,21 +128,38 @@ class TransactionForm extends Component {
 				() => {
 					const order = new Transaction();
 					order.selectAndSetValueFromState({ ...this.state, date: this.state.date.toISOString() });
-					order.save(null, {
-						success: function(order) {
-							selfRef.reset();
-							swal({
-								title: 'OK!',
-								text: 'Order Created',
-								icon: 'success',
-								button: 'OK'
+					swal({
+						title: 'Are you sure?',
+						text: `Account : ${this.state.selectedSocialAccount.get('username')}
+						Amount : ${this.state.amount}
+						Date : ${this.state.date.format('DD/MM/YYYY hh:mm A')}
+						Recipient : ${this.state.recipient}
+						Brand : ${this.state.brandSocialAccountInput}
+						Type : ${this.state.transactionType === 101 ? 'DM' : this.state.transactionType === 102 ? 'EVENT' : 'STORY'}
+						`,
+						buttons: true
+					}).then((confirm) => {
+						if (confirm) {
+							order.save(null, {
+								success: function(order) {
+									selfRef.reset();
+									swal({
+										title: 'OK!',
+										text: 'Transaction Created',
+										icon: 'success',
+										button: 'OK'
+									});
+									console.log(order);
+								},
+								error: function(order, error) {
+									selfRef.setState({ isLoading: false });
+									alert('Failed to create new object, with error code: ' + error.message);
+									console.log(order, error);
+								}
 							});
-							console.log(order);
-						},
-						error: function(order, error) {
+						}
+						else {
 							selfRef.setState({ isLoading: false });
-							alert('Failed to create new object, with error code: ' + error.message);
-							console.log(order, error);
 						}
 					});
 				}
@@ -181,7 +198,6 @@ class TransactionForm extends Component {
 	}
 
 	onImageChange(file) {
-		console.log(file._url)
 		this.setState({
 			transferSlipFile: file
 		});

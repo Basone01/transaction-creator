@@ -29,7 +29,7 @@ const TransactionItem = ({
 		<ItemContainer>
 			<Flex style={{ padding: '0 8px' }}>
 				{/* Social Picture and username */}
-				<Flex fd="column" ait="center" style={{ padding:"8px 0",marginRight: 8, minWidth: 100 }}>
+				<Flex fd="column" ait="center" style={{ padding: '8px 0', marginRight: 8, minWidth: 100 }}>
 					<ProfileImage src={socialProfilePic} />
 					<BoldText>{socialUsername}</BoldText>
 				</Flex>
