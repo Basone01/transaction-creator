@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfileImage, SectionBox, BoldText, PullLeftAndRight } from './styled';
+import { ProfileImage, SectionBox, BoldText, PullLeftAndRight, Flex, ItemContainer } from './styled';
 import moment from 'moment';
 import { compose, withProps } from 'recompose';
 
@@ -21,42 +21,66 @@ const TransactionItem = ({
 	formattedDate,
 	recipient,
 	transferSlipFile,
-	type
+	type,
+	id
 }) => {
+	console.log(id);
 	return (
-		<div style={{ position: 'relative', padding: '16px 0' }}>
-			<SectionBox brake>
-				<ProfileImage src={socialProfilePic} />
+		<ItemContainer>
+			<Flex style={{ padding: '0 8px' }}>
+				{/* Social Picture and username */}
+				<Flex fd="column" ait="center" style={{marginRight:8,minWidth:80}}>
+					<ProfileImage src={socialProfilePic} />
+					<BoldText>{socialUsername}</BoldText>
+				</Flex>
+				{/* top right side */}
+				<Flex fd="column" grow="1" style={{ padding: '8px 0' }}>
+					<Flex grow="1">
+						<Flex grow="2">
+							<Flex fd="column">
+								<span>
+									<BoldText>ID :</BoldText>
+									{id}
+								</span>
+								<span>
+									<BoldText>Brand :</BoldText>
+									{brandSocialUsername}
+								</span>
+								<span>
+									<BoldText>Type :</BoldText>
+									{type}
+								</span>
+							</Flex>
+						</Flex>
+						<Flex grow="1">
+							<Flex fd="column" ait="flex-end">
+								<a target="_blank" href={transferSlipFile._url}>
+									Slip
+								</a>
+							</Flex>
+						</Flex>
+					</Flex>
+					{/* bottom of top right side */}
+					<Flex jc="space-between">
+						<span>
+							<BoldText>Recipient :</BoldText>
+							{recipient}
+						</span>
+					</Flex>
+				</Flex>
+			</Flex>
+			{/* Item Footer */}
+			<Flex jc="space-between" style={{ padding: '8px', backgroundColor: 'rgba(0,0,0,0.15)' }}>
 				<span>
-					<BoldText>Social Account : </BoldText>
-					{socialUsername}
-					<br />
-					<BoldText>Brand Account : </BoldText>
-					{brandSocialUsername}
-				</span>
-			</SectionBox>
-			<PullLeftAndRight>
-				<SectionBox>
-					<BoldText>Type : </BoldText>
-					{type}
-				</SectionBox>
-				<SectionBox>
-					<BoldText>Recipient : </BoldText>
-					{recipient}
-				</SectionBox>
-			</PullLeftAndRight>
-
-			<PullLeftAndRight>
-				<SectionBox>
-					<BoldText>Date : </BoldText>
+					<BoldText>Date :</BoldText>
 					{formattedDate}
-				</SectionBox>
-				<SectionBox>
-					<BoldText>Amount : </BoldText>
+				</span>
+				<span>
+					<BoldText>Amount :</BoldText>
 					{amount}
-				</SectionBox>
-			</PullLeftAndRight>
-		</div>
+				</span>
+			</Flex>
+		</ItemContainer>
 	);
 };
 

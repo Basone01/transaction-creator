@@ -34,7 +34,7 @@ const enhance = compose(
 	withProps((props) => ({
 		transactionsList:
 			props.transactions.length > 0 ? (
-				props.transactions.map((transaction, i) => <TransactionItem key={i} {...transaction.attributes} />)
+				props.transactions.map((transaction, i) => <TransactionItem key={i} id={transaction.id} {...transaction.attributes} />)
 			) : (
 				<span style={{ textAlign: 'center' }}>no transaction available</span>
 			)
