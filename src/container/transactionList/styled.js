@@ -60,7 +60,7 @@ export const ItemContainer = styled.div`
 	position: relative;
 	font-size: 14px;
 	border-radius: 8px;
-	margin: 16px 0;
+	margin: 16px 4px;
 	overflow: hidden;
 	box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 	padding-top:8px;

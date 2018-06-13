@@ -29,7 +29,7 @@ const TransactionItem = ({
 		<ItemContainer>
 			<Flex style={{ padding: '0 8px' }}>
 				{/* Social Picture and username */}
-				<Flex fd="column" ait="center" style={{marginRight:8,minWidth:80}}>
+				<Flex fd="column" ait="center" style={{ padding:"8px 0",marginRight: 8, minWidth: 100 }}>
 					<ProfileImage src={socialProfilePic} />
 					<BoldText>{socialUsername}</BoldText>
 				</Flex>
@@ -52,9 +52,9 @@ const TransactionItem = ({
 								</span>
 							</Flex>
 						</Flex>
-						<Flex grow="1">
+						<Flex grow="1" jc="flex-end">
 							<Flex fd="column" ait="flex-end">
-								<a target="_blank" href={transferSlipFile._url}>
+								<a target="_blank" href={transferSlipFile._url} style={{ marginRight: 8 }}>
 									Slip
 								</a>
 							</Flex>
