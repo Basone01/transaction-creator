@@ -5,17 +5,16 @@ import React, { Component } from 'react';
 import swal from 'sweetalert';
 
 import { findInstagram } from '../../api';
-import { BigButton, Scroller } from '../../sharedStyle';
-import { FlexDown, Flex } from '../../sharedStyle';
-import BrandSocialAccount from '../../parse/BrandSocialAccount';
-import DatePicker from '../../components/datePicker';
-import ImageUploader from '../../components/imageUploader';
-import InputText from '../../components/inputText';
-import LoadingSpinner from '../../components/spinner';
-import SocialAccount from '../../parse/SocialAccount';
-import SocialAccountDropdown from '../../components/socialAccountDropdown';
-import Transaction from '../../parse/Transaction';
-import TransactionTypeSelect from '../../components/transactionTypeSelect';
+import { BigButton, Scroller, FlexDown, Flex } from '../../sharedStyle';
+import { BrandSocialAccount, SocialAccount, Transaction } from '../../parse';
+import {
+	DatePicker,
+	ImageUploader,
+	InputText,
+	LoadingSpinner,
+	SocialAccountDropdown,
+	TransactionTypeSelect
+} from '../../components';
 class TransactionForm extends Component {
 	state = {
 		socialAccounts: [],
@@ -47,7 +46,6 @@ class TransactionForm extends Component {
 		} catch (error) {
 			console.error(error);
 		}
-			
 	}
 
 	validateData() {
@@ -183,6 +181,7 @@ class TransactionForm extends Component {
 	}
 
 	onImageChange(file) {
+		console.log(file._url)
 		this.setState({
 			transferSlipFile: file
 		});
@@ -208,7 +207,8 @@ class TransactionForm extends Component {
 			recipient,
 			brandSocialAccountInput,
 			transactionType,
-			isLoading
+			isLoading,
+			transferSlipFile
 		} = this.state;
 		return (
 			<FlexDown>
@@ -258,6 +258,7 @@ class TransactionForm extends Component {
 					/>
 					<ImageUploader
 						name="transferSlipFile"
+						value={transferSlipFile}
 						onImageChange={(file) => this.onImageChange(file)}
 						onImageClick={() => this.onImageClick()}
 					/>

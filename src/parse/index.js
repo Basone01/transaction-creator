@@ -1,4 +1,5 @@
-import Parse from 'parse';
-import config from '../config';
-Parse.initialize(config.PARSE_APP_ID, config.PARSE_JS_KEY);
-Parse.serverURL = config.PARSE_SERVER_URL;
+import BrandSocialAccount from './BrandSocialAccount';
+import SocialAccount from './SocialAccount';
+import Transaction from './Transaction';
+
+export { BrandSocialAccount, SocialAccount, Transaction };

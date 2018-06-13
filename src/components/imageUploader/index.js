@@ -7,17 +7,14 @@ import { Flex, ImageDisplay, ImageInputLabel } from './styled';
 const enhance = compose(
 	withState('isFileLoading', 'setIsFileLoading', false),
 	withState('display_image', 'setDisplay_image', ''),
-	withState('file', 'setFile', ''),
 	withHandlers({
-		onImageChange: ({ setIsFileLoading, setDisplay_image, setFile, onImageChange }) => (e) => {
+		onImageChange: ({ setIsFileLoading, setDisplay_image, onImageChange }) => (e) => {
 			if (e.target.files && e.target.files[0]) {
 				let reader = new FileReader();
 				setIsFileLoading(true);
 				reader.onload = (e) => {
 					if (!e.target.result.includes('data:image')) {
-						this.setState({
-							isFileLoading: false
-						});
+						setIsFileLoading(false);
 						return;
 					}
 					//upload start
@@ -26,13 +23,13 @@ const enhance = compose(
 					});
 					file
 						.save()
-						.then((upoaded_file) => {
+						.then((uploaded_file) => {
 							//upload success
 							setIsFileLoading(false);
-							setDisplay_image(upoaded_file._url);
-							setFile(upoaded_file);
+							setDisplay_image(uploaded_file._url);
+							console.log(uploaded_file);
 							if (onImageChange) {
-								onImageChange(upoaded_file);
+								onImageChange(uploaded_file);
 							}
 						})
 						.catch((e) => {
@@ -47,9 +44,8 @@ const enhance = compose(
 				reader.readAsDataURL(e.target.files[0]);
 			}
 		},
-		onImageClick: ({ onImageClick, setDisplay_image, setFile }) => () => {
+		onImageClick: ({ onImageClick, setDisplay_image }) => () => {
 			setDisplay_image('');
-			setFile('');
 			if (onImageClick) {
 				onImageClick();
 			}
@@ -57,15 +53,15 @@ const enhance = compose(
 	})
 );
 
-const ImageUploader = ({ name, display_image, isFileLoading, file, onImageChange, onImageClick }) => {
+const ImageUploader = ({ value, name, display_image, isFileLoading, file, onImageChange, onImageClick }) => {
 	return (
 		<Flex jc="center">
-			{display_image ? (
+			{value && display_image ? (
 				<ImageDisplay src={display_image} alt="" onClick={onImageClick} />
 			) : (
 				<ImageInputLabel isLoading={isFileLoading}>
 					Click to Upload Slip
-					<input name={name} type="file" value={file} onChange={onImageChange} />
+					<input name={name} type="file" onChange={onImageChange} />
 				</ImageInputLabel>
 			)}
 		</Flex>

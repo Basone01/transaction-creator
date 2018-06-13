@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import './parse';
+import './parse/init';
 import './globalStyle';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -15,5 +15,5 @@ ReactDOM.render(
 registerServiceWorker();
 
 if (module.hot) {
-	module.hot.accept()
+	module.hot.accept();
 }

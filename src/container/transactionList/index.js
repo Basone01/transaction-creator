@@ -4,9 +4,10 @@ import { Query } from 'parse';
 import React from 'react';
 
 import { FlexDown, Scroller, Flex } from '../../sharedStyle';
-import Transaction from '../../parse/Transaction';
+import { Transaction } from '../../parse';
 import TransactionItem from './transactionItem';
-import LoadingSpinner from '../../components/spinner';
+import { LoadingSpinner } from '../../components';
+
 const enhance = compose(
 	withState('transactions', 'setTransactions', []),
 	withState('isLoading', 'setLoading', false),
