@@ -7,7 +7,6 @@ export default class Queue extends Parse.Object {
 
 	bindTransaction(transaction, date) {
 		const { socialAccount, transactionType } = transaction.attributes;
-
 		let startDate =
             (transactionType === 101 )
                 ? new Date(Date.now()) 

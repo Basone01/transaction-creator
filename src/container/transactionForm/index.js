@@ -21,6 +21,7 @@ class TransactionForm extends Component {
 		selectedSocialAccount: null,
 		amount: 0,
 		date: moment(),
+		workingDate: new Date().toISOString().slice(0, 10),
 		recipient: '',
 		brandSocialAccountInput: '',
 		transferSlipFile: '',
@@ -36,7 +37,6 @@ class TransactionForm extends Component {
 		this.onInputChange = this.onInputChange.bind(this);
 		this.submitOrder = this.submitOrder.bind(this);
 		this.reset = this.reset.bind(this);
-		this.swalDOM = document.createElement('div');
 	}
 
 	async componentDidMount() {
@@ -92,7 +92,7 @@ class TransactionForm extends Component {
 	}
 
 	async submitOrder() {
-		const { brandSocialAccountInput } = this.state;
+		const { brandSocialAccountInput, workingDate } = this.state;
 		const err = this.validateData();
 		if (err) {
 			return alert(err);
@@ -142,26 +142,9 @@ class TransactionForm extends Component {
 					});
 					if (confirm) {
 						try {
-							let date = new Date().toISOString().slice(0, 10);
-							if (transaction.attributes.transactionType !== 101) {
-								const onChangeDate = (e) => (date = e.target.value);
-								render(
-									<input
-										type="date"
-										defaultValue={date}
-										onChange={onChangeDate}
-										style={{ padding: 8 }}
-									/>,
-									this.swalDOM
-								);
-								await swal({
-									text: 'Enter working date:',
-									content: this.swalDOM
-								});
-							}
 							const savedTransaction = await transaction.save(null);
 							const queue = new Queue();
-							queue.bindTransaction(savedTransaction, date);
+							queue.bindTransaction(savedTransaction, workingDate);
 							const savedQueue = await queue.save(null);
 							console.log(savedTransaction);
 							console.log(savedQueue);
@@ -204,9 +187,7 @@ class TransactionForm extends Component {
 	}
 
 	onInputChange(e) {
-		let value =
-			e.target.type === 'number' || e.target.name === 'transactionType' ? Number(e.target.value) : e.target.value;
-
+		let value = e.target.type === 'number' ? Number(e.target.value) : e.target.value;
 		this.setState({
 			[e.target.name]: value,
 			error: {
@@ -243,7 +224,8 @@ class TransactionForm extends Component {
 			brandSocialAccountInput,
 			transactionType,
 			isLoading,
-			transferSlipFile
+			transferSlipFile,
+			workingDate
 		} = this.state;
 		return (
 			<FlexDown>
@@ -289,8 +271,20 @@ class TransactionForm extends Component {
 						name="transactionType"
 						label="Transaction Type :"
 						value={transactionType}
-						onChange={this.onInputChange}
+						onChange={(e) => this.setState({ transactionType: Number(e.target.value) })}
 					/>
+
+					{transactionType !== 101 && (
+						<InputText
+							label="Working Date :"
+							name="workingDate"
+							placeholder="Brand Social Account"
+							type="date"
+							value={workingDate}
+							onChange={this.onInputChange}
+						/>
+					)}
+
 					<ImageUploader
 						name="transferSlipFile"
 						value={transferSlipFile}
