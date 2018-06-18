@@ -133,7 +133,10 @@ class TransactionForm extends Component {
 						title: 'Are you sure?',
 						text: `Account : ${this.state.selectedSocialAccount.get('username')}
 						Amount : ${this.state.amount}
-						Date : ${this.state.date.format('DD/MM/YYYY hh:mm A')}
+						Date : ${this.state.date.format('DD/MM/YYYY HH:mm')}
+						Working Date : ${this.state.transactionType === 101
+							? moment().format('DD/MM/YYYY HH:mm')
+							: moment(workingDate).format('DD/MM/YYYY')}
 						Recipient : ${this.state.recipient}
 						Brand : ${this.state.brandSocialAccountInput}
 						Type : ${this.state.transactionType === 101 ? 'DM' : this.state.transactionType === 102 ? 'EVENT' : 'STORY'}
@@ -187,8 +190,8 @@ class TransactionForm extends Component {
 	}
 
 	onInputChange(e) {
-		if (e.target.type==='date'&&!e.target.value) {
-			return
+		if (e.target.type === 'date' && !e.target.value) {
+			return;
 		}
 		let value = e.target.type === 'number' ? Number(e.target.value) : e.target.value;
 		this.setState({
