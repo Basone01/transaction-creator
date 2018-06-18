@@ -187,6 +187,9 @@ class TransactionForm extends Component {
 	}
 
 	onInputChange(e) {
+		if (e.target.type==='date'&&!e.target.value) {
+			return
+		}
 		let value = e.target.type === 'number' ? Number(e.target.value) : e.target.value;
 		this.setState({
 			[e.target.name]: value,
