@@ -3,10 +3,10 @@ import moment from 'moment';
 import Parse from 'parse';
 import React, { Component } from 'react';
 import swal from 'sweetalert';
-
+import { render } from 'react-dom';
 import { findInstagram } from '../../api';
 import { BigButton, Scroller, FlexDown, Flex } from '../../sharedStyle';
-import { BrandSocialAccount, SocialAccount, Transaction } from '../../parse';
+import { BrandSocialAccount, SocialAccount, Transaction, Queue } from '../../parse';
 import {
 	DatePicker,
 	ImageUploader,
@@ -36,6 +36,7 @@ class TransactionForm extends Component {
 		this.onInputChange = this.onInputChange.bind(this);
 		this.submitOrder = this.submitOrder.bind(this);
 		this.reset = this.reset.bind(this);
+		this.swalDOM = document.createElement('div');
 	}
 
 	async componentDidMount() {
@@ -125,10 +126,10 @@ class TransactionForm extends Component {
 				(state) => ({
 					brandSocialAccount: brand
 				}),
-				() => {
-					const order = new Transaction();
-					order.selectAndSetValueFromState({ ...this.state, date: this.state.date.toISOString() });
-					swal({
+				async () => {
+					const transaction = new Transaction();
+					transaction.selectAndSetValueFromState({ ...this.state, date: this.state.date.toISOString() });
+					const confirm = await swal({
 						title: 'Are you sure?',
 						text: `Account : ${this.state.selectedSocialAccount.get('username')}
 						Amount : ${this.state.amount}
@@ -138,30 +139,49 @@ class TransactionForm extends Component {
 						Type : ${this.state.transactionType === 101 ? 'DM' : this.state.transactionType === 102 ? 'EVENT' : 'STORY'}
 						`,
 						buttons: true
-					}).then((confirm) => {
-						if (confirm) {
-							order.save(null, {
-								success: function(order) {
-									selfRef.reset();
-									swal({
-										title: 'OK!',
-										text: 'Transaction Created',
-										icon: 'success',
-										button: 'OK'
-									});
-									console.log(order);
-								},
-								error: function(order, error) {
-									selfRef.setState({ isLoading: false });
-									alert('Failed to create new object, with error code: ' + error.message);
-									console.log(order, error);
-								}
-							});
-						}
-						else {
-							selfRef.setState({ isLoading: false });
-						}
 					});
+					if (confirm) {
+						try {
+							let date = new Date().toISOString().slice(0, 10);
+							if (transaction.attributes.transactionType !== 101) {
+								const onChangeDate = (e) => (date = e.target.value);
+								render(
+									<input
+										type="date"
+										defaultValue={date}
+										onChange={onChangeDate}
+										style={{ padding: 8 }}
+									/>,
+									this.swalDOM
+								);
+								await swal({
+									text: 'Enter working date:',
+									content: this.swalDOM
+								});
+							}
+							const savedTransaction = await transaction.save(null);
+							const queue = new Queue();
+							queue.bindTransaction(savedTransaction, date);
+							const savedQueue = await queue.save(null);
+							console.log(savedTransaction);
+							console.log(savedQueue);
+							swal({
+								title: 'OK!',
+								text: 'Transaction Created',
+								icon: 'success',
+								button: 'OK'
+							});
+							selfRef.reset();
+							selfRef.setState({ isLoading: false });
+						} catch (error) {
+							selfRef.setState({ isLoading: false });
+							alert('Failed to create new object, with error code: ' + error.message);
+							console.log(error);
+						}
+					}
+					else {
+						selfRef.setState({ isLoading: false });
+					}
 				}
 			);
 		} catch (error) {
@@ -172,13 +192,12 @@ class TransactionForm extends Component {
 
 	reset() {
 		this.setState((state) => ({
-			selectedSocialAccount: null,
 			amount: 0,
 			date: moment(),
 			recipient: '',
 			brandSocialAccountInput: '',
 			transferSlipFile: '',
-			transactionType: 61,
+			transactionType: 101,
 			error: '',
 			isLoading: false
 		}));
